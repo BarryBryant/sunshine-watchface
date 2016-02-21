@@ -29,9 +29,11 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.WindowInsets;
 
@@ -125,7 +127,21 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
             mTextPaint = createTextPaint(resources.getColor(R.color.digital_text));
 
             mTime = new Time();
+
+            IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
+            MessageReceiver messageReceiver = new MessageReceiver();
+            LocalBroadcastManager.getInstance(SunshineWatchFace.this).registerReceiver(messageReceiver, messageFilter);
         }
+
+        public class MessageReceiver extends BroadcastReceiver {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String message = intent.getStringExtra("message");
+                Log.d("***************", message);
+                // Display message in UI
+            }
+        }
+
 
         @Override
         public void onDestroy() {
@@ -222,6 +238,7 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
 
         @Override
         public void onDraw(Canvas canvas, Rect bounds) {
+            Log.d("FACE*********", "DRAWERDRWARERA***&^&^");
             // Draw the background.
             if (isInAmbientMode()) {
                 canvas.drawColor(Color.BLACK);
