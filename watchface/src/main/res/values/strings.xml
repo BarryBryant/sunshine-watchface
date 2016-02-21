@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Watchface</string>
     <string name="my_digital_name">My Digital</string>
+
+
+    <string name="wear_am">AM</string>
+    <string name="wear_pm">PM</string>
+    <string name="fit_steps">%1$d steps</string>
+    <string name="fit_distance">%1$,.2f meters</string>
 </resources>
