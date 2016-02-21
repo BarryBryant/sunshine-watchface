@@ -60,6 +60,12 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
      */
     private static final int MSG_UPDATE_TIME = 0;
 
+    /**
+     * Member variables for weather data.
+     */
+    String mTemperature;
+    int mWeatherId;
+
     @Override
     public Engine onCreateEngine() {
         return new Engine();
@@ -137,7 +143,11 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String message = intent.getStringExtra("message");
-                Log.d("***************", message);
+                String[] splitMessage = message.split("\\s+");
+                mTemperature = splitMessage[0] + " " + splitMessage[1];
+
+                mWeatherId = Integer.parseInt(splitMessage[2]);
+                invalidate();
                 // Display message in UI
             }
         }
@@ -238,7 +248,7 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
 
         @Override
         public void onDraw(Canvas canvas, Rect bounds) {
-            Log.d("FACE*********", "DRAWERDRWARERA***&^&^");
+            Log.d("FACE*********", "DRAWING THIS MUG TRY 2");
             // Draw the background.
             if (isInAmbientMode()) {
                 canvas.drawColor(Color.BLACK);
@@ -252,6 +262,10 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
                     ? String.format("%d:%02d", mTime.hour, mTime.minute)
                     : String.format("%d:%02d:%02d", mTime.hour, mTime.minute, mTime.second);
             canvas.drawText(text, mXOffset, mYOffset, mTextPaint);
+            if(mTemperature != null){
+                canvas.drawText(mTemperature, mXOffset, mYOffset + mYOffset, mTextPaint);
+            }
+
         }
 
         /**
