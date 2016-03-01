@@ -428,8 +428,8 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
 
                     Bitmap scaledWeatherIcon =
                             Bitmap.createScaledBitmap(weatherIcon,
-                                    (int) mHighPaint.getTextSize(),
-                                    (int) mHighPaint.getTextSize(),
+                                    (int) (1.5*mHighPaint.getTextSize()),
+                                    (int) (1.5*mHighPaint.getTextSize()),
                                     true);
 
                     canvas.drawBitmap(scaledWeatherIcon,
