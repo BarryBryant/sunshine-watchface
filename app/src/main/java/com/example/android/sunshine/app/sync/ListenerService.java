@@ -1,7 +1,5 @@
 package com.example.android.sunshine.app.sync;
 
-import android.util.Log;
-
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.WearableListenerService;
 
@@ -15,8 +13,7 @@ public class ListenerService extends WearableListenerService {
 
         if (messageEvent.getPath().equals("/update_path")) {
             SunshineSyncAdapter.syncImmediately(this);
-        }
-        else {
+        } else {
             super.onMessageReceived(messageEvent);
         }
     }
