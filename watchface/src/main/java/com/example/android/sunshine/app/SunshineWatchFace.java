@@ -124,10 +124,9 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
 
         private Calendar mCalendar;
 
-        private float mXOffset;
-        private float mXDistanceOffset;
+
         private float mYOffset;
-        private float mLineHeight;
+
 
         private String mAmString;
         private String mPmString;
@@ -147,17 +146,12 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
 
         @Override
         public void onConnected(Bundle bundle) {
-
         }
-
         @Override
         public void onConnectionSuspended(int i) {
-
         }
-
         @Override
         public void onConnectionFailed(ConnectionResult connectionResult) {
-
         }
 
 
@@ -204,7 +198,6 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
             Resources resources = getResources();
 
             mYOffset = resources.getDimension(R.dimen.weather_y_offset);
-            mLineHeight = resources.getDimension(R.dimen.weather_line_height);
             mAmString = resources.getString(R.string.wear_am);
             mPmString = resources.getString(R.string.wear_pm);
 
@@ -276,13 +269,7 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
             // Load resources that have alternate values for round watches.
             Resources resources = SunshineWatchFace.this.getResources();
             boolean isRound = insets.isRound();
-            mXOffset = resources.getDimension(isRound
-                    ? R.dimen.weather_x_offset_round : R.dimen.weather_x_offset);
-            mXDistanceOffset =
-                    resources.getDimension(
-                            isRound ?
-                                    R.dimen.weather_steps_or_distance_x_offset_round :
-                                    R.dimen.weather_steps_or_distance_x_offset);
+
             float textSize = resources.getDimension(isRound
                     ? R.dimen.weather_text_size_round : R.dimen.weather_text_size);
             float amPmSize = resources.getDimension(isRound
