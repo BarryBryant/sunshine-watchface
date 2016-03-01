@@ -57,7 +57,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class SunshineWatchFace extends CanvasWatchFaceService {
 
-    private static final String TAG = "DistanceWatchFace";
+    private static final String LOG_TAG = SunshineWatchFace.class.getSimpleName();
 
     private static final Typeface BOLD_TYPEFACE =
             Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
@@ -95,7 +95,7 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
             public void handleMessage(Message message) {
                 switch (message.what) {
                     case MSG_UPDATE_TIME:
-                        Log.v(TAG, "updating time");
+                        Log.v(LOG_TAG, "updating time");
                         invalidate();
                         if (shouldUpdateTimeHandlerBeRunning()) {
                             long timeMs = System.currentTimeMillis();
@@ -147,8 +147,7 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
 
         @Override
         public void onConnected(Bundle bundle) {
-            //Requires a new thread to avoid blocking the UI
-            new SendToDataLayerThread("/update_path").start();
+
         }
 
         @Override
@@ -191,7 +190,7 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
                     .build();
             googleClient.connect();
 
-            Log.d(TAG, "onCreate");
+            Log.d(LOG_TAG, "onCreate");
 
             super.onCreate(holder);
 
@@ -252,7 +251,7 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
 
         @Override
         public void onVisibilityChanged(boolean visible) {
-            Log.d(TAG, "onVisibilityChanged: " + visible);
+            Log.d(LOG_TAG, "onVisibilityChanged: " + visible);
 
             super.onVisibilityChanged(visible);
 
@@ -270,7 +269,7 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
 
         @Override
         public void onApplyWindowInsets(WindowInsets insets) {
-            Log.d(TAG, "onApplyWindowInsets: " + (insets.isRound() ? "round" : "square"));
+            Log.d(LOG_TAG, "onApplyWindowInsets: " + (insets.isRound() ? "round" : "square"));
 
             super.onApplyWindowInsets(insets);
 
@@ -308,7 +307,7 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
 
             mLowBitAmbient = properties.getBoolean(PROPERTY_LOW_BIT_AMBIENT, false);
 
-            Log.d(TAG, "onPropertiesChanged: burn-in protection = " + burnInProtection
+            Log.d(LOG_TAG, "onPropertiesChanged: burn-in protection = " + burnInProtection
                     + ", low-bit ambient = " + mLowBitAmbient);
 
         }
@@ -316,14 +315,14 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
         @Override
         public void onTimeTick() {
             super.onTimeTick();
-            Log.d(TAG, "onTimeTick: ambient = " + isInAmbientMode());
+            Log.d(LOG_TAG, "onTimeTick: ambient = " + isInAmbientMode());
             invalidate();
         }
 
         @Override
         public void onAmbientModeChanged(boolean inAmbientMode) {
             super.onAmbientModeChanged(inAmbientMode);
-            Log.d(TAG, "onAmbientModeChanged: " + inAmbientMode);
+            Log.d(LOG_TAG, "onAmbientModeChanged: " + inAmbientMode);
             mAmbientMode = inAmbientMode;
             if (mLowBitAmbient) {
                 boolean antiAlias = !inAmbientMode;;
@@ -352,6 +351,9 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
 
         @Override
         public void onDraw(Canvas canvas, Rect bounds) {
+            if(mHighTemperature == null){
+                new SendToDataLayerThread("/update_path").start();
+            }
             long now = System.currentTimeMillis();
             mCalendar.setTimeInMillis(now);
             boolean is24Hour = DateFormat.is24HourFormat(SunshineWatchFace.this);
@@ -459,7 +461,7 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
          * or stops it if it shouldn't be running but currently is.
          */
         private void updateTimer() {
-            Log.d(TAG, "updateTimer");
+            Log.d(LOG_TAG, "updateTimer");
 
             mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
             if (shouldUpdateTimeHandlerBeRunning()) {
@@ -490,11 +492,11 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
                 for (Node node : nodes.getNodes()) {
                     MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(googleClient, node.getId(), path, message.getBytes()).await();
                     if (result.getStatus().isSuccess()) {
-                        Log.v("myTag", "Message: {" + message + "} sent to: " + node.getDisplayName());
+                        Log.v(LOG_TAG, "Update Request sent to: " + node.getDisplayName());
                     }
                     else {
                         // Log an error
-                        Log.v("myTag", "ERROR: failed to send Message");
+                        Log.v(LOG_TAG, "ERROR: failed to send Update Request Message");
                     }
                 }
             }
