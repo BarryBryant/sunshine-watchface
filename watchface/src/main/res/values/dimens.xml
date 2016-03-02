@@ -7,13 +7,10 @@
     <dimen name="digital_y_offset">90dp</dimen>
     <dimen name="weather_text_size">40dp</dimen>
     <dimen name="weather_text_size_round">45dp</dimen>
-    <dimen name="fit_steps_or_distance_text_size">20dp</dimen>
     <dimen name="weather_am_pm_size">25dp</dimen>
     <dimen name="weather_am_pm_size_round">30dp</dimen>
     <dimen name="weather_x_offset">15dp</dimen>
     <dimen name="weather_x_offset_round">25dp</dimen>
-    <dimen name="weather_steps_or_distance_x_offset">20dp</dimen>
-    <dimen name="weather_steps_or_distance_x_offset_round">30dp</dimen>
     <dimen name="weather_y_offset">80dp</dimen>
     <dimen name="weather_line_height">25dp</dimen>
 

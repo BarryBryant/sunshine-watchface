@@ -5,6 +5,4 @@
 
     <string name="wear_am">AM</string>
     <string name="wear_pm">PM</string>
-    <string name="fit_steps">%1$d steps</string>
-    <string name="fit_distance">%1$,.2f meters</string>
 </resources>
