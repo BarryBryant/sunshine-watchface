@@ -16,4 +16,13 @@
     <dimen name="weather_steps_or_distance_x_offset_round">30dp</dimen>
     <dimen name="weather_y_offset">80dp</dimen>
     <dimen name="weather_line_height">25dp</dimen>
+
+    <dimen name ="time_y_offset_round">80dp</dimen>
+    <dimen name ="time_y_offset">65dp</dimen>
+    <dimen name ="icon_y_offset_round">85dp</dimen>
+    <dimen name ="icon_y_offset">75dp</dimen>
+    <dimen name ="temperature_y_offset_round">185dp</dimen>
+    <dimen name ="temperature_y_offset">150dp</dimen>
+
+
 </resources>
