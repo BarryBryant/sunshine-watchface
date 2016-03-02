@@ -120,7 +120,10 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
         private Calendar mCalendar;
 
 
-        private float mYOffset;
+        private float mTimeYOffset;
+        private float mIconYOffset;
+        private float mTemperatureYOffset;
+        private double mIconMultiplier;
 
 
         private String mAmString;
@@ -191,7 +194,7 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
 
             Resources resources = getResources();
 
-            mYOffset = resources.getDimension(R.dimen.weather_y_offset);
+
             mAmString = resources.getString(R.string.wear_am);
             mPmString = resources.getString(R.string.wear_pm);
 
@@ -266,6 +269,16 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
                     ? R.dimen.weather_text_size_round : R.dimen.weather_text_size);
             float amPmSize = resources.getDimension(isRound
                     ? R.dimen.weather_am_pm_size_round : R.dimen.weather_am_pm_size);
+
+            mTimeYOffset = resources.getDimension(isRound
+                    ? R.dimen.time_y_offset_round : R.dimen.time_y_offset);
+            mIconYOffset = resources.getDimension(isRound
+                    ? R.dimen.icon_y_offset_round : R.dimen.icon_y_offset);
+            mTemperatureYOffset = resources.getDimension(isRound
+                    ? R.dimen.temperature_y_offset_round : R.dimen.temperature_y_offset);
+
+            mIconMultiplier = isRound ? 1.5 : 1;
+
 
             mHourPaint.setTextSize(textSize);
             mMinutePaint.setTextSize(textSize);
@@ -343,11 +356,9 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
                 canvas.drawColor(Color.BLACK);
             } else canvas.drawColor(getColor(R.color.primary));
 
-            // Draw the hours.
-            //float x = mXOffset;
+
             float newX = 0;
             String hourString;
-
 
             // Build Strings
             if (is24Hour) {
@@ -374,27 +385,25 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
             if (mHighTemperature != null && mLowTemperature != null) {
                 xTemperature = bounds.centerX() - (mHighPaint.measureText(
                         mHighTemperature + " " + mLowTemperature) / 2);
-                xIcon = bounds.centerX() + (mHighPaint.measureText(
-                        mHighTemperature + " " + mLowTemperature) / 1.8f);
             }
 
 
             // Draw hour
-            canvas.drawText(hourString, x, mYOffset, mHourPaint);
+            canvas.drawText(hourString, x, mTimeYOffset, mHourPaint);
             x += mHourPaint.measureText(hourString);
 
             // Draw first colon (between hour and minute).
-            canvas.drawText(COLON_STRING, x, mYOffset, mColonPaint);
+            canvas.drawText(COLON_STRING, x, mTimeYOffset, mColonPaint);
             x += mColonWidth;
 
             // Draw the minutes.
-            canvas.drawText(minuteString, x, mYOffset, mMinutePaint);
+            canvas.drawText(minuteString, x, mTimeYOffset, mMinutePaint);
             x += mMinutePaint.measureText(minuteString);
 
             // If we're in 12-hour mode, draw AM/PM
             if (!is24Hour) {
                 x += mColonWidth;
-                canvas.drawText(amPmString, x, mYOffset, mAmPmPaint);
+                canvas.drawText(amPmString, x, mTimeYOffset, mAmPmPaint);
             }
 
             // Only render info if there is no peek card, so they do not bleed into each other
@@ -407,14 +416,14 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
                     canvas.drawText(
                             mHighTemperature,
                             xTemperature,
-                            bounds.centerY() + mYOffset,
+                            mTemperatureYOffset,
                             mHighPaint);
 
                     xTemperature += mHighPaint.measureText(mHighTemperature + " ");
 
                     canvas.drawText(mLowTemperature,
                             xTemperature,
-                            bounds.centerY() + mYOffset,
+                            mTemperatureYOffset,
                             mLowPaint);
                 }
                 if (mWeatherId > 0) {
@@ -423,13 +432,13 @@ public class SunshineWatchFace extends CanvasWatchFaceService {
 
                     Bitmap scaledWeatherIcon =
                             Bitmap.createScaledBitmap(weatherIcon,
-                                    (int) (1.5 * mHighPaint.getTextSize()),
-                                    (int) (1.5 * mHighPaint.getTextSize()),
-                                    true);
+                                    (int) (mIconMultiplier * mHighPaint.getTextSize()),
+                                    (int) (mIconMultiplier * mHighPaint.getTextSize()), true);
 
                     canvas.drawBitmap(scaledWeatherIcon,
-                            bounds.centerX() - scaledWeatherIcon.getWidth() / 2,
                             bounds.centerY() - scaledWeatherIcon.getHeight() / 2,
+                            mIconYOffset,
+
                             null);
                 }
 
