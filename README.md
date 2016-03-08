@@ -4,7 +4,7 @@ ___
 ![](http://i.imgur.com/igTK4Rf.png)
 ___
 ### Required Behavior
-* App works on both round and square watch faces
-* App displays the current time
-* App displays high and low temperatures
-* App displays a graphic that summarizes the day's weather
+- [x] App works on both round and square watch faces
+- [x] App displays the current time
+- [x] App displays high and low temperatures
+- [x] App displays a graphic that summarizes the day's weather
